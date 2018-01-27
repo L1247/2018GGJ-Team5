@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 286995195
+    locked: 1
+  - name: Classmate
+    uniqueID: 1435061695
+    locked: 0
