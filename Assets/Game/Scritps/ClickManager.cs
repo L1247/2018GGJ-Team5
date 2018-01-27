@@ -2,9 +2,11 @@
 using UnityEngine;
 using  UniRx;
 using  UniRx.Triggers;
+using Zenject;
 
 public class ClickManager
 {
+    [Inject] private GameMain gameMain;
     public void SubscribeMouseDown(GameObject gameObject)
     {
         //Debug.Log(gameObject);
@@ -12,7 +14,7 @@ public class ClickManager
             .OnMouseDownAsObservable()
             .Subscribe(_=>
             {
-                Debug.Log(gameObject);
+                gameMain.CheckIsWASD(gameObject);
             });
     }
 }

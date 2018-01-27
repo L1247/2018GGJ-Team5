@@ -30,7 +30,7 @@ public class SpawnManager
 
     public GameObject GetRandomMainGo()
     {
-        int randIndex = Random.Range(0, GloData.column);
+        int randIndex = Random.Range(0, GloData.ColumnCount);
         return classMates[randIndex];
     }
 
