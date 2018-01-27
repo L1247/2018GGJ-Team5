@@ -28,4 +28,10 @@ public class SpawnManager
         return selectedObj;
     }
 
+    public GameObject GetRandomMainGo()
+    {
+        int randIndex = Random.Range(0, GloData.column);
+        return classMates[randIndex];
+    }
+
 }

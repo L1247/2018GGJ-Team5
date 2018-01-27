@@ -4,27 +4,26 @@ using UniRx;
 
 public class GameMain : MonoBehaviour
 {
-    [SerializeField] private ObjectSpwner[] objectSpwners;
-    [Inject] private SpawnManager spawnManager;
+    [SerializeField] private Sprite mainCharacterSprite;
+    [SerializeField] private ObjectSpwner[] _objectSpwners;
+    [Inject] private SpawnManager _spawnManager;
     
     // Use this for initialization
     void Start()
     {
-        objectSpwners = FindObjectsOfType<ObjectSpwner>();
-        for (var i = 0; i < objectSpwners.Length; i++)
-        {
-            objectSpwners[i].Spawn();
-        }
+        for (var i = 0; i < _objectSpwners.Length; i++)
+            _objectSpwners[i].Spawn();
 
-        //InitEnd();
+        //SetMainAndTarget();
         Observable.EveryUpdate()
             .Where(x => Input.GetKeyDown(KeyCode.A))
-            .Subscribe(_ => InitEnd());
+            .Subscribe(_ => SetMainAndTarget());
     }
 
-    public void InitEnd()
+    public void SetMainAndTarget()
     {
-        spawnManager.GetRandomNotRepeatingObj(true);
+        GameObject mainCharacter = _spawnManager.GetRandomMainGo();
+        mainCharacter.GetComponent<SpriteRenderer>().sprite = mainCharacterSprite;
     }
 
 }
