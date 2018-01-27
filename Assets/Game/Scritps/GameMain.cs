@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SpriteColorFX;
+using UnityEngine;
 using Zenject;
 using UniRx;
 
@@ -14,16 +15,23 @@ public class GameMain : MonoBehaviour
         for (var i = 0; i < _objectSpwners.Length; i++)
             _objectSpwners[i].Spawn();
 
-        //SetMainAndTarget();
+        SetMainAndTarget();
         Observable.EveryUpdate()
             .Where(x => Input.GetKeyDown(KeyCode.A))
-            .Subscribe(_ => SetMainAndTarget());
+            .Subscribe(_ => SetRandomColorFx());
     }
 
-    public void SetMainAndTarget()
+    void SetMainAndTarget()
     {
         GameObject mainCharacter = _spawnManager.GetRandomMainGo();
         mainCharacter.GetComponent<SpriteRenderer>().sprite = mainCharacterSprite;
     }
+
+    void SetRandomColorFx()
+    {
+        GameObject mainCharacter = _spawnManager.GetRandomNotRepeatingObj();
+        DemoDissolve demoDissolve = mainCharacter.GetComponent<DemoDissolve>();
+        demoDissolve.enabled = true;
+    }   
 
 }

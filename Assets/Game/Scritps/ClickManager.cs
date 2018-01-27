@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SpriteColorFX;
+using UnityEngine;
 using  UniRx;
 using  UniRx.Triggers;
 
@@ -9,6 +10,9 @@ public class ClickManager
         //Debug.Log(gameObject);
         gameObject
             .OnMouseDownAsObservable()
-            .Subscribe(_=> Debug.Log(gameObject));
+            .Subscribe(_=>
+            {
+                Debug.Log(gameObject);
+            });
     }
 }
