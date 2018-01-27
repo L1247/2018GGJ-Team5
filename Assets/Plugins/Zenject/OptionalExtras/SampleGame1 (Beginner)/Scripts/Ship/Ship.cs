@@ -21,8 +21,9 @@ namespace Zenject.Asteroids
         ShipState _state = null;
 
         [Inject]
-        public void Construct(ShipStateFactory stateFactory)
+        public void Construct ( ShipStateFactory stateFactory )
         {
+            Debug.Log( "Ship" );
             _stateFactory = stateFactory;
         }
 
@@ -48,30 +49,30 @@ namespace Zenject.Asteroids
             set { transform.rotation = value; }
         }
 
-        public void Start()
+        public void Start ( )
         {
-            ChangeState(ShipStates.WaitingToStart);
+            ChangeState( ShipStates.WaitingToStart );
         }
 
-        public void Update()
+        public void Update ( )
         {
             _state.Update();
         }
 
-        public void OnTriggerEnter(Collider other)
+        public void OnTriggerEnter ( Collider other )
         {
-            _state.OnTriggerEnter(other);
+            _state.OnTriggerEnter( other );
         }
 
-        public void ChangeState(ShipStates state)
+        public void ChangeState ( ShipStates state )
         {
-            if (_state != null)
+            if ( _state != null )
             {
                 _state.Dispose();
                 _state = null;
             }
 
-            _state = _stateFactory.CreateState(state);
+            _state = _stateFactory.CreateState( state );
             _state.Start();
         }
     }

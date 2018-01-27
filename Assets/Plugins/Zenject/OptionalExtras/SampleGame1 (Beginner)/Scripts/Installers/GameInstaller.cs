@@ -75,7 +75,7 @@ namespace Zenject.Asteroids
             Container.Bind<LevelHelper>().AsSingle();
 
             Container.BindInterfacesTo<AudioHandler>().AsSingle();
-
+            
             Container.Bind<ExplosionFactory>().AsSingle().WithArguments(_settings.ExplosionPrefab);
             Container.Bind<BrokenShipFactory>().AsSingle().WithArguments(_settings.BrokenShipPrefab);
         }
@@ -88,10 +88,11 @@ namespace Zenject.Asteroids
 
             // Note that the ship itself is bound using a ZenjectBinding component (see Ship
             // game object in scene heirarchy)
-
-            Container.BindFactory<ShipStateWaitingToStart, ShipStateWaitingToStart.Factory>().WhenInjectedInto<ShipStateFactory>();
+            
             Container.BindFactory<ShipStateDead, ShipStateDead.Factory>().WhenInjectedInto<ShipStateFactory>();
             Container.BindFactory<ShipStateMoving, ShipStateMoving.Factory>().WhenInjectedInto<ShipStateFactory>();
+            Container.BindFactory<ShipStateWaitingToStart, ShipStateWaitingToStart.Factory>().WhenInjectedInto<ShipStateFactory>();
+
         }
 
         void InitExecutionOrder()
@@ -101,8 +102,8 @@ namespace Zenject.Asteroids
             // If for example we wanted to ensure that AsteroidManager.Initialize
             // always gets called before GameController.Initialize (and similarly for Tick)
             // Then we could do the following:
-            Container.BindExecutionOrder<AsteroidManager>(-10);
-            Container.BindExecutionOrder<GameController>(-20);
+            Container.BindExecutionOrder<GameController>(-10);
+            Container.BindExecutionOrder<AsteroidManager>(-20);
 
             // Note that they will be disposed of in the reverse order given here
         }

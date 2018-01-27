@@ -21,32 +21,35 @@ namespace Zenject.Asteroids
         readonly ShipStateMoving.Factory _movingFactory;
         readonly ShipStateDead.Factory _deadFactory;
 
-        public ShipStateFactory(
-            ShipStateDead.Factory deadFactory,
-            ShipStateMoving.Factory movingFactory,
-            ShipStateWaitingToStart.Factory  waitingFactory)
+        public ShipStateFactory (
+            ShipStateDead.Factory deadFactory ,
+            ShipStateMoving.Factory movingFactory ,
+            ShipStateWaitingToStart.Factory waitingFactory )
         {
             _waitingFactory = waitingFactory;
             _movingFactory = movingFactory;
             _deadFactory = deadFactory;
+
+            Debug.Log( "ShipStateFactory" );
+
         }
 
-        public ShipState CreateState(ShipStates state)
+        public ShipState CreateState ( ShipStates state )
         {
-            switch (state)
+            switch ( state )
             {
                 case ShipStates.Dead:
-                {
-                    return _deadFactory.Create();
-                }
+                    {
+                        return _deadFactory.Create();
+                    }
                 case ShipStates.WaitingToStart:
-                {
-                    return _waitingFactory.Create();
-                }
+                    {
+                        return _waitingFactory.Create();
+                    }
                 case ShipStates.Moving:
-                {
-                    return _movingFactory.Create();
-                }
+                    {
+                        return _movingFactory.Create();
+                    }
             }
 
             throw Assert.CreateException();

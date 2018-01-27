@@ -19,6 +19,7 @@ namespace Zenject.Asteroids
         [Inject]
         public void Construct(LevelHelper level, Settings settings)
         {
+            Debug.Log(gameObject.name + " Construct" );
             _level = level;
             _settings = settings;
             _rigidBody = GetComponent<Rigidbody>();

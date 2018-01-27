@@ -7,7 +7,7 @@ namespace Zenject.Asteroids
 {
     public abstract class ShipState : IDisposable
     {
-        public abstract void Update();
+        public virtual void Update ( ) { }
 
         public virtual void Start()
         {

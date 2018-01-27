@@ -103,6 +103,10 @@ namespace Zenject.Asteroids
 
         public class Factory : Factory<ShipStateMoving>
         {
+            public Factory ( )
+            {
+                Debug.Log( "ShipStateMoving" );
+            }
         }
     }
 }

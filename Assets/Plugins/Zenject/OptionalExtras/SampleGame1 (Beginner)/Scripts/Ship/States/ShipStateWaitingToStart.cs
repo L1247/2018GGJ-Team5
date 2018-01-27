@@ -42,6 +42,10 @@ namespace Zenject.Asteroids
 
         public class Factory : Factory<ShipStateWaitingToStart>
         {
+            public Factory ( )
+            {
+                Debug.Log( "ShipStateWaitingToStart");
+            }
         }
     }
 }

@@ -29,6 +29,7 @@ namespace Zenject.Asteroids
             _shipCrashedSignal = shipCrashedSignal;
             _asteroidSpawner = asteroidSpawner;
             _ship = ship;
+            Debug.Log( "GameController Construct");
         }
 
         public float ElapsedTime

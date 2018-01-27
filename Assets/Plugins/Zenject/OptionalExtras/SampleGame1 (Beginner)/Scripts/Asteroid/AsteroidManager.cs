@@ -9,7 +9,7 @@ using ModestTree;
 
 namespace Zenject.Asteroids
 {
-    public class AsteroidManager : ITickable, IFixedTickable
+    public class AsteroidManager : ITickable, IFixedTickable , IInitializable
     {
         readonly List<Asteroid> _asteroids = new List<Asteroid>();
         readonly Queue<AsteroidAttributes> _cachedAttributes = new Queue<AsteroidAttributes>();
@@ -32,6 +32,7 @@ namespace Zenject.Asteroids
             _timeToNextSpawn = _timeIntervalBetweenSpawns;
             _asteroidFactory = asteroidFactory;
             _level = level;
+            Debug.Log("AsteroidManager Construct");
         }
 
         public IEnumerable<Asteroid> Asteroids
@@ -187,6 +188,11 @@ namespace Zenject.Asteroids
             }
 
             throw Assert.CreateException();
+        }
+
+        public void Initialize ( )
+        {
+            throw new NotImplementedException();
         }
 
         enum Side

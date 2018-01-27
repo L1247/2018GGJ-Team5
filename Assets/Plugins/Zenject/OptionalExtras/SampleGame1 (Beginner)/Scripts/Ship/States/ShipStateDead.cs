@@ -36,10 +36,11 @@ namespace Zenject.Asteroids
             _explosionFactory = explosionFactory;
             _settings = settings;
             _ship = ship;
-        }
+      }
 
         public override void Start()
         {
+            Debug.Log("start Dead");
             _ship.MeshRenderer.enabled = false;
             _ship.ParticleEmitter.emit = false;
 
@@ -69,10 +70,6 @@ namespace Zenject.Asteroids
             GameObject.Destroy(_shipBroken);
         }
 
-        public override void Update()
-        {
-        }
-
         [Serializable]
         public class Settings
         {
@@ -81,6 +78,10 @@ namespace Zenject.Asteroids
 
         public class Factory : Factory<ShipStateDead>
         {
+            public Factory ( )
+            {
+                Debug.Log( "ShipStateDead" );
+            }
         }
     }
 }
