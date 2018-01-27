@@ -5,11 +5,11 @@ using UniRx;
 
 public class GameMain : MonoBehaviour
 {
-    [SerializeField] private Sprite mainCharacterSprite, sparrowSprite;
+    [SerializeField] private Sprite mainCharacterSprite, WhitebirdSprite ,sparrowSprite;
     [SerializeField] private ObjectSpwner[] _objectSpwners;
     [Inject] private SpawnManager _spawnManager;
 
-    private Transform mainCharacter;
+    private Transform mainCharacter , targetCharacter;
     // Use this for initialization
     void Start()
     {
@@ -26,6 +26,8 @@ public class GameMain : MonoBehaviour
     {
         mainCharacter = _spawnManager.GetRandomMainGo().transform;
         mainCharacter.GetComponent<SpriteRenderer>().sprite = mainCharacterSprite;
+        targetCharacter = _spawnManager.GetRandomTargetGo().transform;
+        targetCharacter.GetComponent<SpriteRenderer>().sprite = WhitebirdSprite;
     }
 
     void SetRandomColorFx()
@@ -35,13 +37,21 @@ public class GameMain : MonoBehaviour
         demoDissolve.enabled = true;
     }
 
-    public void CheckIsWASD(GameObject go)
+    public void CheckIsWASD(GameObject targetGo)
     {
-        Transform targetTrans = go.transform;
+        Transform targetTrans = targetGo.transform;
         float distance = Vector3.Distance(mainCharacter.position, targetTrans.position);
         float offset = 0.1f;
-        Debug.Log(distance);
-        if (distance <= GloData.ColumnOffset + offset || distance <= GloData.RowOffset + offset)
+        int targetRow = int.Parse(targetTrans.name.Split('[')[1].Substring(0, 1));
+        int targetColumn = int.Parse(targetTrans.name.Split('-')[1].Substring(0, 1));
+        int mainRow = int.Parse(mainCharacter.name.Split('[')[1].Substring(0, 1));
+        int mainColumn = int.Parse(mainCharacter.name.Split('-')[1].Substring(0, 1));
+
+        bool isUpDown = distance <= GloData.ColumnOffset + offset;
+        bool isLeftRight = distance <= GloData.RowOffset + offset;
+        bool isNeighbor = Mathf.Abs(targetRow - mainRow).Equals(1) 
+                          && targetColumn.Equals(mainColumn);
+        if (isUpDown || isLeftRight || isNeighbor)
         {
             mainCharacter.GetComponent<SpriteRenderer>().sprite = sparrowSprite;
             mainCharacter = targetTrans;

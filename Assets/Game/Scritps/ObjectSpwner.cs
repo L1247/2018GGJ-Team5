@@ -18,7 +18,7 @@ public class ObjectSpwner : MonoBehaviour
         firstTransform = transform.GetChild(0);
         Transform parentTransform = firstTransform.parent;
         Vector3 firstPostion = firstTransform.position;
-        string initName = firstTransform.name;
+        string initName = "鳥";
 
         for (int i = 0; i < row; i++)
         {
