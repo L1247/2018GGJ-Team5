@@ -17,7 +17,9 @@ public enum BirdType
     [Description("麻雀")]
     Sparrow,
     [Description("文鳥")]
-    WenBird
+    WenBird,
+    [Description("鸚鵡")]
+    Parrot,
 }
 
 public enum ActionType

@@ -13,8 +13,11 @@ public class ClickManager
         gameObject
             .OnMouseDownAsObservable()
             .Subscribe(_ => {
-                bool canSend = gameMain.CheckIsMainNeighborhood(gameObject);
-                if (canSend) gameMain.SendLetter(gameObject);
+                if (gameMain.IsClickable)
+                {
+                    bool canSend = gameMain.CheckIsCurrentCharNeighborhood(gameObject);
+                    if (canSend) gameMain.SendLetter(gameObject);
+                }
             });
     }
 

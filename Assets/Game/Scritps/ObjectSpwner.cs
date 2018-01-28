@@ -13,10 +13,10 @@ public class ObjectSpwner : MonoBehaviour
     private static int spawnIndex = 1;
 
 
-    public void Spawn()
+    public void Spawn(Transform parent )
     {
         firstTransform = transform.GetChild(0);
-        Transform parentTransform = firstTransform.parent;
+        //Transform parentTransform = firstTransform.parent;
         Vector3 firstPostion = firstTransform.position;
         string initName = "鳥";
 
@@ -30,10 +30,10 @@ public class ObjectSpwner : MonoBehaviour
                 Vector3 yOffset = Vector3.down * GloData.ColumnOffset * j;
                 Vector3 spawnPos = firstPostion + xOffset + yOffset;
                 GameObject newObj = Instantiate(firstTransform, spawnPos
-                    , Quaternion.identity, parentTransform).gameObject;
+                    , Quaternion.identity, parent).gameObject;
                 newObj.name = newName;
                 clickManager.SubscribeMouseDown(newObj);
-                spawnManager.PutIntoPool(newObj);
+                spawnManager.PutIntoPool(newObj );
             }
             spawnIndex++;
         }
