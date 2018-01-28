@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using SpriteColorFX;
 using UnityEngine;
 using Zenject;
 using UniRx;

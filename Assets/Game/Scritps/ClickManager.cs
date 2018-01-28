@@ -1,5 +1,4 @@
-﻿using SpriteColorFX;
-using UnityEngine;
+﻿using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 using Zenject;
