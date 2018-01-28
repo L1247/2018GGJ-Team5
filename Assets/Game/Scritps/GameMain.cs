@@ -10,6 +10,8 @@ public class GameMain : MonoBehaviour
 {
     [SerializeField] private Transform birdGroup;
     [SerializeField] private ObjectSpwner[] _objectSpwners;
+    [SerializeField] private AudioSource soundAudioSource;
+    [SerializeField] private AudioClip clickClip , sendClip1, sendClip2;
     [Inject] private SpawnManager _spawnManager;
 
     private Transform mainCharacter, targetCharacter, currentCharacter, clickedCharacter;
@@ -37,6 +39,10 @@ public class GameMain : MonoBehaviour
         targetCharacter = _spawnManager.GetRandomTargetGo().transform;
         _spawnManager.GetBirdMisc(targetCharacter.gameObject).SetBirdType(BirdType.WenBird);
         currentCharacter = mainCharacter;
+
+        Transform Parrot =  _spawnManager.GetRandomMiddleGo().transform;
+        _spawnManager.GetBirdMisc(Parrot.gameObject).SetBirdType(BirdType.Parrot);
+
     }
 
     public bool CheckIsCurrentCharNeighborhood(GameObject targetGo)
@@ -64,20 +70,38 @@ public class GameMain : MonoBehaviour
         IsClickable = false;
         clickedCharacter = target.transform;
         bool isTargetOnRight = clickedCharacter.position.x > currentCharacter.position.x;
+        bool isTargetOnUp = clickedCharacter.position.y > currentCharacter.position.y;
         BirdMisc nextBirdMisc = _spawnManager.GetBirdMisc(target);
         BirdMisc currentbirdMisc = _spawnManager.GetBirdMisc(currentCharacter.gameObject);
 
+        //Debug.Log(isTargetOnRight);
+        //Debug.Log(isTargetOnUp);
         ActionTypeCollction[] typeCollctions = new ActionTypeCollction[3];
-        if (isTargetOnRight)
+        if (isTargetOnUp == false)
         {
-            typeCollctions[0] = new ActionTypeCollction(ActionType.SendRight, ActionType.RaiseLeftHand);
-            typeCollctions[1] = new ActionTypeCollction(ActionType.RaiseRightHand, ActionType.SendLeft);
+            if (isTargetOnRight)
+            {
+                typeCollctions[0] = new ActionTypeCollction(ActionType.SendRight, ActionType.RaiseLeftHand);
+                typeCollctions[1] = new ActionTypeCollction(ActionType.RaiseRightHand, ActionType.SendLeft);
+            }
+            else if (isTargetOnRight == false)
+            {
+                typeCollctions[0] = new ActionTypeCollction(ActionType.SendLeft, ActionType.RaiseRightHand);
+                typeCollctions[1] = new ActionTypeCollction(ActionType.RaiseLeftHand, ActionType.SendRight);
+            }
         }
-        else
+        else if (isTargetOnUp)
         {
-            typeCollctions[0] = new ActionTypeCollction(ActionType.SendLeft, ActionType.RaiseRightHand);
-            typeCollctions[1] = new ActionTypeCollction(ActionType.RaiseLeftHand, ActionType.SendRight);
+            typeCollctions[0] = new ActionTypeCollction(ActionType.SendForward, ActionType.RaiseBackHand);
+            typeCollctions[1] = new ActionTypeCollction(ActionType.RaiseForwardHand, ActionType.SendBack);
         }
+        //else if (isTargetOnUp == false)
+        //{
+        //    typeCollctions[0] = new ActionTypeCollction(ActionType.SendBack, ActionType.RaiseForwardHand);
+        //    typeCollctions[1] = new ActionTypeCollction(ActionType.RaiseBackHand, ActionType.SendForward);
+        //}
+
+
 
         typeCollctions[2] = new ActionTypeCollction(ActionType.Idle, ActionType.Idle);
         SetAndCallActions(
@@ -97,16 +121,20 @@ public class GameMain : MonoBehaviour
             };
             actions[i] = action;
         }
+        soundAudioSource.PlayOneShot(clickClip);
         StartCoroutine(Fade(actions));
     }
 
     IEnumerator Fade(Action[] actions)
     {
-        foreach (Action action in actions)
+        for (var i = 0; i < actions.Length; i++)
         {
-            action();
+            if(i== 0) soundAudioSource.PlayOneShot(sendClip1);
+            if(i== 1) soundAudioSource.PlayOneShot(sendClip2);
+            actions[i]();
             yield return new WaitForSeconds(1f);
         }
+       
 
         currentCharacter = clickedCharacter;
         IsClickable = true;

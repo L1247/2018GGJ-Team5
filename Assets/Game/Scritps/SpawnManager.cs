@@ -41,12 +41,21 @@ public class SpawnManager
     public GameObject GetRandomMainGo()
     {
         int randIndex = Random.Range(0, GloData.ColumnCount);
-        return birdMiscs[randIndex].gameObject;
+        GameObject result = birdMiscs[randIndex].gameObject;
+        return result;
     }
 
     public GameObject GetRandomTargetGo()
     {
         int randIndex = Random.Range(classMates.Count - GloData.ColumnCount, classMates.Count);
-        return birdMiscs[randIndex].gameObject;
+        GameObject result = birdMiscs[randIndex].gameObject;
+        return result;
+    }
+
+    public GameObject GetRandomMiddleGo()
+    {
+        int randIndex = Random.Range(GloData.ColumnCount, classMates.Count - GloData.ColumnCount);
+        GameObject result = birdMiscs[randIndex].gameObject;
+        return result;
     }
 }
