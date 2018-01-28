@@ -4,6 +4,7 @@ using UnityEngine;
 public class SpawnManager
 {
     private List<GameObject> classMates = new List<GameObject>();
+    private List<BirdMisc> birdMiscs = new List<BirdMisc>();
     private int selectIndex;
     private bool shuffled;
     private void Shuffle()
@@ -15,6 +16,15 @@ public class SpawnManager
     public void PutIntoPool(GameObject go)
     {
         classMates.Add(go);
+
+        BirdMisc birdMisc = new BirdMisc(go, BirdType.Sparrow);
+        birdMisc.gameObject = go;
+        birdMiscs.Add(birdMisc);
+    }
+
+    public BirdMisc GetBirdMisc(GameObject go)
+    {
+        return birdMiscs.Find(birdmisc => birdmisc.gameObject.Equals(go));
     }
 
 
@@ -31,12 +41,12 @@ public class SpawnManager
     public GameObject GetRandomMainGo()
     {
         int randIndex = Random.Range(0, GloData.ColumnCount);
-        return classMates[randIndex];
+        return birdMiscs[randIndex].gameObject;
     }
 
     public GameObject GetRandomTargetGo()
     {
-        int randIndex = Random.Range (classMates.Count - GloData.ColumnCount , classMates.Count);
-        return classMates[randIndex];
+        int randIndex = Random.Range(classMates.Count - GloData.ColumnCount, classMates.Count);
+        return birdMiscs[randIndex].gameObject;
     }
 }
