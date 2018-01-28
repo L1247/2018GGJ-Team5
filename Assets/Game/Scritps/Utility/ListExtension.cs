@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public static class Utility
+public static class ListExtenstion
 {
     private static Random rng = new Random();
 

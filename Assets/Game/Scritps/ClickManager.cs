@@ -1,7 +1,7 @@
 ﻿using SpriteColorFX;
 using UnityEngine;
-using  UniRx;
-using  UniRx.Triggers;
+using UniRx;
+using UniRx.Triggers;
 using Zenject;
 
 public class ClickManager
@@ -12,9 +12,10 @@ public class ClickManager
         //Debug.Log(gameObject);
         gameObject
             .OnMouseDownAsObservable()
-            .Subscribe(_=>
-            {
-                gameMain.CheckIsWASD(gameObject);
+            .Subscribe(_ => {
+                bool canSend = gameMain.CheckIsMainNeighborhood(gameObject);
+                if (canSend) gameMain.SendLetter(gameObject);
             });
     }
+
 }

@@ -36,7 +36,7 @@ public class SpawnManager
 
     public GameObject GetRandomTargetGo()
     {
-        int randIndex = Random.Range(classMates.Count - GloData.ColumnCount , classMates.Count);
+        int randIndex = Random.Range (classMates.Count - GloData.ColumnCount , classMates.Count);
         return classMates[randIndex];
     }
 }

@@ -2,14 +2,15 @@
 using UnityEngine;
 using Zenject;
 using UniRx;
+using UniRx.Triggers;
 
 public class GameMain : MonoBehaviour
 {
-    [SerializeField] private Sprite mainCharacterSprite, WhitebirdSprite ,sparrowSprite;
+    [SerializeField] private Sprite mainCharacterSprite, WhitebirdSprite, sparrowSprite;
     [SerializeField] private ObjectSpwner[] _objectSpwners;
     [Inject] private SpawnManager _spawnManager;
 
-    private Transform mainCharacter , targetCharacter;
+    private Transform mainCharacter, targetCharacter;
     // Use this for initialization
     void Start()
     {
@@ -37,7 +38,7 @@ public class GameMain : MonoBehaviour
         demoDissolve.enabled = true;
     }
 
-    public void CheckIsWASD(GameObject targetGo)
+    public bool CheckIsMainNeighborhood(GameObject targetGo)
     {
         Transform targetTrans = targetGo.transform;
         float distance = Vector3.Distance(mainCharacter.position, targetTrans.position);
@@ -49,14 +50,19 @@ public class GameMain : MonoBehaviour
 
         bool isUpDown = distance <= GloData.ColumnOffset + offset;
         bool isLeftRight = distance <= GloData.RowOffset + offset;
-        bool isNeighbor = Mathf.Abs(targetRow - mainRow).Equals(1) 
+        bool isNeighbor = Mathf.Abs(targetRow - mainRow).Equals(1)
                           && targetColumn.Equals(mainColumn);
-        if (isUpDown || isLeftRight || isNeighbor)
-        {
-            mainCharacter.GetComponent<SpriteRenderer>().sprite = sparrowSprite;
-            mainCharacter = targetTrans;
-            mainCharacter.GetComponent<SpriteRenderer>().sprite = mainCharacterSprite;
-        }
+
+        return isUpDown || isLeftRight || isNeighbor;
+    }
+
+    public void SendLetter(GameObject target)
+    {
+        //mainCharacter.GetComponent<SpriteRenderer>().sprite = sparrowSprite;
+        //mainCharacter.GetComponent<SpriteRenderer>().sprite = mainCharacterSprite;
+        Transform targetTransform = target.transform;
+        bool isTargetOnRight = targetTransform.position.x > mainCharacter.position.x;
+        mainCharacter = target.transform;
     }
 
 }
