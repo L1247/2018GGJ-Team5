@@ -4,6 +4,7 @@ using UnityEngine;
 using Zenject;
 using UniRx;
 using UniRx.Triggers;
+using UnityEngine.UI;
 
 public class GameMain : MonoBehaviour
 {
@@ -11,11 +12,15 @@ public class GameMain : MonoBehaviour
     [SerializeField] private ObjectSpwner[] _objectSpwners;
     [SerializeField] private AudioSource soundAudioSource;
     [SerializeField] private AudioClip clickClip, sendClip1, sendClip2;
+    [SerializeField] private GameObject UI_Rule;
+    [SerializeField] private Image UI_Result;
+
+    [SerializeField] private Sprite Win, GameOver;
+
     [Inject] private SpawnManager _spawnManager;
+    private Transform mainCharacter, targetCharacter, currentCharacter, clickedCharacter, parrotCharacter;
+    [HideInInspector] public bool IsClickable = true;
 
-    private Transform mainCharacter, targetCharacter, currentCharacter, clickedCharacter;
-
-    public bool IsClickable = true;
     // Use this for initialization
     void Start()
     {
@@ -27,21 +32,18 @@ public class GameMain : MonoBehaviour
 
     private void GameStart()
     {
+        UI_Rule.SetActive(true);
+        UI_Result.gameObject.SetActive(false);
         SetMainAndTarget();
         IsClickable = true;
     }
 
     void SetMainAndTarget()
     {
-        mainCharacter = _spawnManager.GetRandomMainGo().transform;
-        _spawnManager.GetBirdMisc(mainCharacter.gameObject).SetBirdType(BirdType.Ostrich);
-        targetCharacter = _spawnManager.GetRandomTargetGo().transform;
-        _spawnManager.GetBirdMisc(targetCharacter.gameObject).SetBirdType(BirdType.WenBird);
+        mainCharacter = _spawnManager.GetRandomMainGo();
+        targetCharacter = _spawnManager.GetRandomTargetGo();
+        parrotCharacter = _spawnManager.GetRandomMiddleGo();
         currentCharacter = mainCharacter;
-
-        Transform Parrot = _spawnManager.GetRandomMiddleGo().transform;
-        _spawnManager.GetBirdMisc(Parrot.gameObject).SetBirdType(BirdType.Parrot);
-
     }
 
     public bool CheckIsCurrentCharNeighborhood(GameObject targetGo)
@@ -125,13 +127,31 @@ public class GameMain : MonoBehaviour
             actions[i]();
             yield return new WaitForSeconds(1f);
             if (i == 0) soundAudioSource.PlayOneShot(sendClip1);
-            if (i == 1) soundAudioSource.PlayOneShot(sendClip2);
+            if (i == 1)
+            {
+                soundAudioSource.PlayOneShot(sendClip2);
+            }
         }
-
+        IsClickable = CheckGameResult(clickedCharacter);
         currentCharacter = clickedCharacter;
-        IsClickable = true;
     }
 
+    private bool CheckGameResult(Transform clickedTarget)
+    {
+        bool isRightBird = clickedTarget.Equals(targetCharacter);
+        bool isWrongBird = clickedTarget.Equals(parrotCharacter);
+        bool isNormalBird = (isRightBird || isWrongBird) == false;
+        if (isRightBird) SetResultSprite(Win);
+        if (isWrongBird) SetResultSprite(GameOver);
+
+        return isNormalBird;
+    }
+
+    void SetResultSprite(Sprite sprite)
+    {
+        UI_Result.sprite = sprite;
+        UI_Result.gameObject.SetActive(true);
+    }
 }
 
 public class ActionTypeCollction

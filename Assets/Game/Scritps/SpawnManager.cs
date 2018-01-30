@@ -38,24 +38,33 @@ public class SpawnManager
         return selectedObj;
     }
 
-    public GameObject GetRandomMainGo()
+    
+
+    public Transform GetRandomMainGo()
     {
         int randIndex = Random.Range(0, GloData.ColumnCount);
         GameObject result = birdMiscs[randIndex].gameObject;
-        return result;
+        return SetBirdType(result, BirdType.Ostrich); 
     }
 
-    public GameObject GetRandomTargetGo()
+    public Transform GetRandomTargetGo()
     {
         int randIndex = Random.Range(classMates.Count - GloData.ColumnCount, classMates.Count);
         GameObject result = birdMiscs[randIndex].gameObject;
-        return result;
+        return SetBirdType(result, BirdType.WenBird);
     }
 
-    public GameObject GetRandomMiddleGo()
+
+    public Transform GetRandomMiddleGo()
     {
         int randIndex = Random.Range(GloData.ColumnCount, classMates.Count - GloData.ColumnCount);
         GameObject result = birdMiscs[randIndex].gameObject;
-        return result;
+        return SetBirdType(result, BirdType.Parrot);
+    }
+
+    private Transform SetBirdType( GameObject go ,BirdType type)
+    {
+        GetBirdMisc(go).SetBirdType(type);
+        return go.transform;
     }
 }
